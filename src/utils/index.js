@@ -1,5 +1,9 @@
-// TODO
+import { useState, useEffect } from 'react';
+
+
 // 在一个函数里，改变传入的对象本身是不好的 (immutable)
+// TODO
+
 export const cleanObject = (object) => {
   // TODO
   // Object.assign({}, object)
@@ -13,6 +17,35 @@ export const cleanObject = (object) => {
     }
   })
   return result
+}
+
+// 自定义hook 必须以use开头
+export const useMount = (callback) => {
+  useEffect(() => {
+    callback()
+  }, [])
+}
+
+// const debounce = (func, delay) => {
+//   let timeout
+//   return (...params) => {
+//     if (timeout) {
+//       clearTimeout(timeout)
+//     }
+//     timeout = setTimeout(function() {
+//       func(...params)
+//     }, delay)
+//   }
+// }
+export const useDebounce = (value, delay) => {
+  const [debuouncedValue, setDebouncedValue] = useState(value)
+  useEffect(() => {
+    // 每次在value变化以后，设置一个定时器
+    const timeout = setTimeout(() => setDebouncedValue(value), delay)
+    // 每次在上一个useEffect处理完以后再运行
+    return () => clearTimeout(timeout)
+  }, [value, delay])
+  return debuouncedValue
 }
 
 export const isFalsy = value => value === 0 ? false : !value

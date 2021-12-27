@@ -40,7 +40,7 @@ export const useMount = (callback: () => void) => {
 // unknown不能赋给别的变量，也不能从unknown上读取任何方法
 // 我们想让这个函数的返回值 为 value的类型，而不是unknown类型
 // 所以考虑后面用泛型来规范类型
-export const useDebounce = (value: unknown, delay?: number): any => {
+export const useDebounce = <T>(value: T, delay?: number) => {
   const [debuouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次在value变化以后，设置一个定时器

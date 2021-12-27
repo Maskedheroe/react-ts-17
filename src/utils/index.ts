@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // 在一个函数里，改变传入的对象本身是不好的 (immutable)
 // TODO
 
-export const cleanObject = (object) => {
+export const cleanObject = (object: object) => {
   // TODO
   // Object.assign({}, object)
   const result = { ...object }
@@ -20,7 +20,7 @@ export const cleanObject = (object) => {
 }
 
 // 自定义hook 必须以use开头
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback()
   }, [])
@@ -37,7 +37,7 @@ export const useMount = (callback) => {
 //     }, delay)
 //   }
 // }
-export const useDebounce = (value, delay) => {
+export const useDebounce = (value: any, delay?: number) => {
   const [debuouncedValue, setDebouncedValue] = useState(value)
   useEffect(() => {
     // 每次在value变化以后，设置一个定时器
@@ -48,6 +48,6 @@ export const useDebounce = (value, delay) => {
   return debuouncedValue
 }
 
-export const isFalsy = value => value === 0 ? false : !value
+export const isFalsy = (value: any) => (value === 0 ? false : !value)
 // TODO
 //!!的意思就是把一个值转换成布尔值

@@ -15,6 +15,7 @@
     "antd": "^4.16.11",
     "axios": "^0.24.0",
     "i18next": "^20.4.0",
+    "jira-dev-tool": "^1.7.61",
     "jwt-decode": "^3.1.2",
     "qs": "^6.10.2",
     "react": "^17.0.2",
@@ -70,5 +71,8 @@
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

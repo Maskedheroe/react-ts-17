@@ -3,6 +3,7 @@ import { SearchPanel } from "./search-panel";
 import React, { useEffect, useState } from "react";
 import * as qs from 'qs'
 import { cleanObject, useDebounce } from '../../utils/index';
+import { useHttp } from 'utils/http';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -13,22 +14,13 @@ export const ProjectListScreen = () => {
   });
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
+  const client = useHttp()
   const debouncedParam = useDebounce(param, 1000)
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
-    ).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    client('projects', {data: cleanObject(debouncedParam)}).then(setList)
   }, [debouncedParam]);
   useEffect(() => {
-    fetch(`${apiUrl}/users`).then(async (response) => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client('users').then(setUsers)
   }, []); // 空数组的作用就是在页面加载的时候，只调用一次，等于componentdidMount
   return (
     <div>

@@ -6,7 +6,7 @@ import { cleanObject, useDebounce } from '../../utils/index';
 import { useHttp } from 'utils/http';
 import styled from '@emotion/styled';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+// const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
@@ -19,9 +19,11 @@ export const ProjectListScreen = () => {
   const debouncedParam = useDebounce(param, 1000)
   useEffect(() => {
     client('projects', {data: cleanObject(debouncedParam)}).then(setList)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParam]);
   useEffect(() => {
     client('users').then(setUsers)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 空数组的作用就是在页面加载的时候，只调用一次，等于componentdidMount
   return (
     <Container>

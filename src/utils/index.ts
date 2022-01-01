@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 // 在一个函数里，改变传入的对象本身是不好的 (immutable)
 // TODO
 
-export const cleanObject = (object: object) => {
+// 限制对象****
+export const cleanObject = (object: { [key: string]: unknown }) => {
   // TODO
   // Object.assign({}, object)
   const result = { ...object };
@@ -11,7 +12,7 @@ export const cleanObject = (object: object) => {
     const value = result[key];
     // TODO
     // 包含了undefined null 0
-    if (!value) {
+    if (isVoid(value)) {
       delete result[key];
     }
   });
@@ -22,20 +23,10 @@ export const cleanObject = (object: object) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
-// const debounce = (func, delay) => {
-//   let timeout
-//   return (...params) => {
-//     if (timeout) {
-//       clearTimeout(timeout)
-//     }
-//     timeout = setTimeout(function() {
-//       func(...params)
-//     }, delay)
-//   }
-// }
 
 // unknown不能赋给别的变量，也不能从unknown上读取任何方法
 // 我们想让这个函数的返回值 为 value的类型，而不是unknown类型
@@ -51,6 +42,8 @@ export const useDebounce = <T>(value: T, delay?: number) => {
   return debuouncedValue;
 };
 
+export const isVoid = (value: unknown) => value === undefined || value === null || value === ''
+
 export const isFalsy: (value: unknown) => boolean = (value) => {
   return value === 0 ? false : !value;
 };
@@ -58,16 +51,16 @@ export const isFalsy: (value: unknown) => boolean = (value) => {
 //!!的意思就是把一个值转换成布尔值
 
 export const useArray = <T>(initialArray: T[]) => {
-  const [value, setValue] = useState(initialArray)
+  const [value, setValue] = useState(initialArray);
   return {
     value,
     setValue,
     add: (item: T) => setValue([...value, item]),
     clear: () => setValue([]),
     removeIndex: (index: number) => {
-      const copy = [...value]
-      copy.slice(index, 1)
-      setValue(copy)
-    }
-  }
-}
+      const copy = [...value];
+      copy.slice(index, 1);
+      setValue(copy);
+    },
+  };
+};

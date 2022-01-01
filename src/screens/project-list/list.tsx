@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import { User } from "./search-panel";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 interface Project {
   id: string;
@@ -18,6 +18,12 @@ interface ListProps {
 }
 
 export const List = ({ list, users }: ListProps) => {
+  const dataList = list.map((value, index) => {
+    return {
+      ...value,
+      key: index,
+    };
+  });
   return (
     <Table
       pagination={false}
@@ -25,7 +31,7 @@ export const List = ({ list, users }: ListProps) => {
         {
           title: "名称",
           dataIndex: "name",
-          sorter: (a, b) => a.name.localeCompare(b.name)
+          sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
           title: "部门",
@@ -43,17 +49,19 @@ export const List = ({ list, users }: ListProps) => {
           },
         },
         {
-          title: '创建时间',
+          title: "创建时间",
           render(value, project) {
-            return <span>
-              {
-                project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'
-              }
-            </span>
-          }
-        }
+            return (
+              <span>
+                {project.created
+                  ? dayjs(project.created).format("YYYY-MM-DD")
+                  : "无"}
+              </span>
+            );
+          },
+        },
       ]}
-      dataSource={list}
-    ></Table>
+      dataSource={dataList}
+    />
   );
 };

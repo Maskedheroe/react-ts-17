@@ -1,9 +1,9 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 import { User } from "./search-panel";
 import dayjs from "dayjs";
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string;
@@ -12,23 +12,23 @@ interface Project {
   created: number;
 }
 
-interface ListProps {
-  list: Project[];
+interface ListProps extends TableProps<Project> {
   users: User[];
+  list: Project[];
 }
-
-export const List = ({ list, users }: ListProps) => {
+export const List = ({ users, list, ...props }: ListProps) => {
   const dataList = list.map((value, index) => {
     return {
       ...value,
       key: index,
     };
   });
+
   return (
     <Table
       pagination={false}
       columns={[
-        {
+        { 
           title: "名称",
           dataIndex: "name",
           sorter: (a, b) => a.name.localeCompare(b.name),
@@ -40,12 +40,7 @@ export const List = ({ list, users }: ListProps) => {
         {
           title: "负责人",
           render(value, project) {
-            return (
-              <span>
-                {users.find((user) => user.id === project.personId)?.name ||
-                  "未知"}
-              </span>
-            );
+            return <span>{users.find((user) => user.id === project.personId)?.name || "未知"}</span>;
           },
         },
         {
@@ -62,6 +57,7 @@ export const List = ({ list, users }: ListProps) => {
         },
       ]}
       dataSource={dataList}
+      {...props}
     />
   );
 };

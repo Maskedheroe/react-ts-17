@@ -48,13 +48,16 @@ export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
           }
         >
           <Select.Option value="">负责人</Select.Option>
-          {users.map((user) => {
-            return (
-              <Select.OptGroup value={user.id} key={user.id}>
-                {user.name}
-              </Select.OptGroup>
-            );
-          })}
+          {
+            users.map((user) => {
+              console.log('11', user);
+              return (
+                <Select.OptGroup value={user.id} key={user.id}>
+                  {user.name} 
+                </Select.OptGroup>
+              );
+            })
+          }
         </Select>
       </Form.Item>
     </Form>

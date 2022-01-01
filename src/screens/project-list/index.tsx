@@ -1,43 +1,42 @@
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import React, { useEffect, useState } from "react";
-import * as qs from 'qs'
-import { cleanObject, useDebounce } from '../../utils/index';
-import { useHttp } from 'utils/http';
-import styled from '@emotion/styled';
-
-// const apiUrl = process.env.REACT_APP_API_URL;
+import React, { useState } from "react";
+import { useDebounce } from "../../utils/index";
+import styled from "@emotion/styled";
+import { useProjects } from "../../utils/project";
+import { useUsers } from "../../utils/user";
+import { Typography } from "antd";
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
-  const [list, setList] = useState([]);
-  const [users, setUsers] = useState([]);
-  const client = useHttp()
-  const debouncedParam = useDebounce(param, 1000)
-  useEffect(() => {
-    client('projects', {data: cleanObject(debouncedParam)}).then(setList)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedParam]);
-  useEffect(() => {
-    client('users').then(setUsers)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 空数组的作用就是在页面加载的时候，只调用一次，等于componentdidMount
+  const debouncedParam = useDebounce(param, 1000);
+
+  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  const { data: users } = useUsers();
   return (
     <Container>
       <h1>项目列表</h1>
       <SearchPanel
         param={param}
         setParam={setParam}
-        users={users}
+        users={users || []}
       ></SearchPanel>
-      <List list={list} users={users}></List>
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List
+        list={list || []}
+        users={users || []}
+        dataSource={list || []}
+        loading={isLoading}
+      ></List>
     </Container>
   );
 };
 
 const Container = styled.div`
   padding: 3.2rem;
-`
+`;

@@ -1,13 +1,15 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 import { ProjectListScreen } from "screens/project-list";
 import { useAuth } from "./context/auth-context";
 import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
-import { Row } from "./components/lib";
 import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
 import { ProjectScreen } from "./screens/project/ProjectScreen";
+import {} from "react-router-dom";
+import { resetRoute } from "./utils/index";
+import { Row } from "./components/lib";
 
 export const AuthenticatedApp = () => {
   return (
@@ -20,6 +22,10 @@ export const AuthenticatedApp = () => {
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
+            />
+            <Route
+              path="*"
+              element={<Navigate to="/projects"></Navigate>}
             ></Route>
           </Routes>
         </Router>
@@ -31,12 +37,14 @@ export const AuthenticatedApp = () => {
 const PageHeader = () => {
   const { logout, user } = useAuth();
   return (
-    <Header>
-      <HeaderLeft gap={true} between={true}>
-        <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+    <Header between={true}>
+      <Row gap={true}>
+        <Button type="link" onClick={resetRoute}>
+          <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+        </Button>
         <h2>项目</h2>
         <h2>用户</h2>
-      </HeaderLeft>
+      </Row>
       <HeaderRight>
         <Dropdown
           overlay={
@@ -57,8 +65,6 @@ const PageHeader = () => {
     </Header>
   );
 };
-
-const HeaderLeft = styled(Row)``;
 
 const HeaderRight = styled.div``;
 

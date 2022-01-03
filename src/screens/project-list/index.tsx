@@ -6,16 +6,18 @@ import styled from "@emotion/styled";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { Typography } from "antd";
+import { useQueryQueryParam } from 'utils/url'
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useState({
+  const [, setParam] = useState({
     name: "",
     personId: "",
   });
+  const param = useQueryQueryParam(['name', 'personId'])
   const debouncedParam = useDebounce(param, 1000);
-
   const { isLoading, error, data: list } = useProjects(debouncedParam);
-  const { data: users } = useUsers();
+  // useEffect的大坑！！！！！
+  const { data: users } = useUsers();   
   return (
     <Container>
       <h1>项目列表</h1>

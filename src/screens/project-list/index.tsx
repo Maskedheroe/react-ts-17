@@ -6,18 +6,19 @@ import styled from "@emotion/styled";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { Typography } from "antd";
-import { useQueryQueryParam } from 'utils/url'
+import { useQueryQueryParam } from "utils/url";
 
 export const ProjectListScreen = () => {
   const [, setParam] = useState({
     name: "",
     personId: "",
   });
-  const param = useQueryQueryParam(['name', 'personId'])
+  const [keys, setKeys] = useState<("name" | "personId")[]>(["name", "personId"]);
+  const [param] = useQueryQueryParam(keys);
   const debouncedParam = useDebounce(param, 1000);
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   // useEffect的大坑！！！！！
-  const { data: users } = useUsers();   
+  const { data: users } = useUsers();
   return (
     <Container>
       <h1>项目列表</h1>
@@ -38,7 +39,8 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
-
+ProjectListScreen.whyDidYouRender = true;
+// 等于class组件的 static whyDidYouRender = true
 const Container = styled.div`
   padding: 3.2rem;
 `;

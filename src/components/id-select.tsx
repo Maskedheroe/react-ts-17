@@ -20,14 +20,13 @@ interface IdSelectProps
  * onChange只会回调 number|undefined类型
  * 当 isNaN(Number(value))为true的时候，代表选择默认类型
  * @param props
- * @returns
  */
 
 export const IdSelect = (props: IdSelectProps) => {
   const { value, onChange, defaultOptionName, options, ...restProps } = props;
   return (
     <Select
-      value={toNumber(value)}
+      value={options?.length ? toNumber(value) : 0}
       onChange={(value) => onChange(toNumber(value) || undefined)}
       {...restProps}
     >

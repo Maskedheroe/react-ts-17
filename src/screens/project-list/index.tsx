@@ -9,12 +9,9 @@ import { Typography } from "antd";
 import { useQueryQueryParam } from "utils/url";
 
 export const ProjectListScreen = () => {
-  const [, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  // 基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象(非响应式的对象)，绝不可以放到依赖里
   const [keys, setKeys] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param] = useQueryQueryParam(keys);
+  const [param, setParam] = useQueryQueryParam(keys);
   const debouncedParam = useDebounce(param, 1000);
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   // useEffect的大坑！！！！！
@@ -39,7 +36,7 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 // 等于class组件的 static whyDidYouRender = true
 const Container = styled.div`
   padding: 3.2rem;

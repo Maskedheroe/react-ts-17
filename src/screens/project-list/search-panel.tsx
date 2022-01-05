@@ -51,8 +51,8 @@ export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
           {
             users.map((user) => {
               return (
-                <Select.OptGroup value={user.id} key={user.id}>
-                  {user.name} 
+                <Select.OptGroup value={String(user.id)} key={user.id}>
+                  {user.name + 1} 
                 </Select.OptGroup>
               );
             })

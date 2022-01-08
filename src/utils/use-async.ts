@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useMountedRef } from 'utils';
 
 
 interface State<D> {
@@ -25,6 +26,9 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
   })
   const [retry, setRetry] = useState(() => () => {
   }) // useState直接传入函数的含义是惰性初始化。所以要传入两层函数
+
+  const mountedRef = useMountedRef()
+
   const setData = (data: D) => setState({
     data,
     stat: 'success',
@@ -48,7 +52,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     })
     setState({...state, stat: 'loading'})
     return promise.then(data => {
-      setData(data)
+      mountedRef.current && setData(data)
       return data
     }).catch(error => {
       // catch 会处理异常，如果不主动抛出外部接收不到异常

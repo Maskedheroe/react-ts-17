@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // 在一个函数里，改变传入的对象本身是不好的 (immutable)
 // TODO
@@ -66,3 +66,17 @@ export const useArray = <T>(initialArray: T[]) => {
 }
 
 export const resetRoute = () => window.location.href = window.location.origin
+
+/**
+ * 用来返回组件的挂载状态，如果还没挂载或者已经挂载，返回false；反之，返回true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false)
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    } 
+  })
+  return mountedRef
+}

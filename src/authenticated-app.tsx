@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navigate, Route, Routes } from "react-router";
 import { ProjectListScreen } from "screens/project-list";
@@ -10,15 +10,19 @@ import { ProjectScreen } from "./screens/project/ProjectScreen";
 import {} from "react-router-dom";
 import { resetRoute } from "./utils/index";
 import { Row } from "./components/lib";
+import { ProjectModal } from './screens/project-list/project-modal';
+import { ProjectPopover } from './components/ProjectPopover';
 
 export const AuthenticatedApp = () => {
+  const [projectModalOpen, setProjectModalOpen] = useState(false)
+  // 这个函数里所有使用到的组件都只是申明，因为我们在申明一个组件 export const component = () => {}
   return (
     <Container>
-      <PageHeader />
+      <PageHeader setProjectModalOpen={setProjectModalOpen}/>
       <Main>
         <Router>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />}></Route>
+            <Route path={"/projects"} element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen}/>}></Route>
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -30,42 +34,50 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
+      <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)}/>
     </Container>
   );
 };
 
-const PageHeader = () => {
-  const { logout, user } = useAuth();
+const PageHeader = ({setProjectModalOpen} : { setProjectModalOpen: (isOpen: boolean) => void }) => {
   return (
     <Header between={true}>
       <Row gap={true}>
-        <Button type="link" onClick={resetRoute}>
+        <div onClick={resetRoute} style={{ cursor: "pointer" }}>
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
-        </Button>
-        <h2>项目</h2>
-        <h2>用户</h2>
+        </div>
+        <ProjectPopover setProjectModalOpen={setProjectModalOpen}/>
+        <span>用户</span>
       </Row>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key={"logout"}>
-                <Button type="link" onClick={logout}>
-                  登出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type="link" onClick={(e) => e.preventDefault()}>
-            Hi, {user?.name}
-          </Button>
-        </Dropdown>
+        <User/>
       </HeaderRight>
     </Header>
   );
 };
 
+const User = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button type="link" onClick={logout}>
+              登出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type="link" onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
+  );
+};
+
+// Temporal dead zone 暂时性死区
 const HeaderRight = styled.div``;
 
 const Container = styled.div`

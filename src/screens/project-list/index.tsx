@@ -5,20 +5,36 @@ import { useDebounce } from "../../utils/index";
 import styled from "@emotion/styled";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useQueryQueryParam } from "utils/url";
-import { useProjectsSearchParams } from './util';
+import { useProjectsSearchParams } from "./util";
+import { Row } from 'components/lib';
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = ({
+  setProjectModalOpen,
+}: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   // 基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象(非响应式的对象)，绝不可以放到依赖里
-  const [keys, setKeys] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param, setParam] = useProjectsSearchParams(keys)
-  const { isLoading, error, data: list, retry } = useProjects(useDebounce(param, 200));
+  const [keys, setKeys] = useState<("name" | "personId")[]>([
+    "name",
+    "personId",
+  ]);
+  const [param, setParam] = useProjectsSearchParams(keys);
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 200));
   // useEffect的大坑！！！！！
   const { data: users } = useUsers();
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button onClick={() => setProjectModalOpen(true)}>创建项目</Button>
+      </Row>
       <SearchPanel
         param={param}
         setParam={setParam}
@@ -33,6 +49,7 @@ export const ProjectListScreen = () => {
         dataSource={list || []}
         loading={isLoading}
         refresh={retry}
+        setProjectModalOpen={setProjectModalOpen}
       ></List>
     </Container>
   );

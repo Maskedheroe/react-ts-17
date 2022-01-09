@@ -37,7 +37,7 @@ export const Row = styled.div<{
         ? "2rem"
         : undefined};
     justify-content: ${(props) =>
-      props.between ? "space-between" : undefined};
+      props.between ? "space-between" : 'undefined'};
     margin-bottom: ${(props) => props.marginBottom + "rem"};
   }
 `;

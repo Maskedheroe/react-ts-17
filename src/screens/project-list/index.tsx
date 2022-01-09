@@ -8,13 +8,9 @@ import { useUsers } from "../../utils/user";
 import { Button, Typography } from "antd";
 import { useQueryQueryParam } from "utils/url";
 import { useProjectsSearchParams } from "./util";
-import { Row } from 'components/lib';
+import { Row } from "components/lib";
 
-export const ProjectListScreen = ({
-  setProjectModalOpen,
-}: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   // 基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象(非响应式的对象)，绝不可以放到依赖里
   const [keys, setKeys] = useState<("name" | "personId")[]>([
     "name",
@@ -31,9 +27,9 @@ export const ProjectListScreen = ({
   const { data: users } = useUsers();
   return (
     <Container>
-      <Row between={true}>
+      <Row between={true} style={{ justifyContent: "space-between" }}>
         <h1>项目列表</h1>
-        <Button onClick={() => setProjectModalOpen(true)}>创建项目</Button>
+        {props.projectButton}
       </Row>
       <SearchPanel
         param={param}
@@ -49,7 +45,7 @@ export const ProjectListScreen = ({
         dataSource={list || []}
         loading={isLoading}
         refresh={retry}
-        setProjectModalOpen={setProjectModalOpen}
+        projectButton={props.projectButton}
       ></List>
     </Container>
   );

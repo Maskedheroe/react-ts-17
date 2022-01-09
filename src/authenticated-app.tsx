@@ -9,20 +9,41 @@ import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
 import { ProjectScreen } from "./screens/project/ProjectScreen";
 import {} from "react-router-dom";
 import { resetRoute } from "./utils/index";
-import { Row } from "./components/lib";
-import { ProjectModal } from './screens/project-list/project-modal';
-import { ProjectPopover } from './components/ProjectPopover';
+import { ButtonNoPadding, Row } from "./components/lib";
+import { ProjectModal } from "./screens/project-list/project-modal";
+import { ProjectPopover } from "./components/ProjectPopover";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false)
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
   // 这个函数里所有使用到的组件都只是申明，因为我们在申明一个组件 export const component = () => {}
   return (
     <Container>
-      <PageHeader setProjectModalOpen={setProjectModalOpen}/>
+      <PageHeader
+        projectButton={
+          <ButtonNoPadding
+            type="link"
+            onClick={() => setProjectModalOpen(true)}
+          >
+            创建项目
+          </ButtonNoPadding>
+        }
+      />
       <Main>
         <Router>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen}/>}></Route>
+            <Route
+              path={"/projects"}
+              element={
+                <ProjectListScreen projectButton={
+                  <ButtonNoPadding
+                    type="link"
+                    onClick={() => setProjectModalOpen(true)}
+                  >
+                    创建项目
+                  </ButtonNoPadding>
+                }/>
+              }
+            ></Route>
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -34,23 +55,26 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
-      <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)}/>
+      <ProjectModal
+        projectModalOpen={projectModalOpen}
+        onClose={() => setProjectModalOpen(false)}
+      />
     </Container>
   );
 };
 
-const PageHeader = ({setProjectModalOpen} : { setProjectModalOpen: (isOpen: boolean) => void }) => {
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   return (
     <Header between={true}>
       <Row gap={true}>
         <div onClick={resetRoute} style={{ cursor: "pointer" }}>
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
         </div>
-        <ProjectPopover setProjectModalOpen={setProjectModalOpen}/>
+        <ProjectPopover {...props}/>
         <span>用户</span>
       </Row>
       <HeaderRight>
-        <User/>
+        <User />
       </HeaderRight>
     </Header>
   );

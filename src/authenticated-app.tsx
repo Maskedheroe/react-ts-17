@@ -14,34 +14,18 @@ import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/ProjectPopover";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
+
   // 这个函数里所有使用到的组件都只是申明，因为我们在申明一个组件 export const component = () => {}
   return (
     <Container>
-      <PageHeader
-        projectButton={
-          <ButtonNoPadding
-            type="link"
-            onClick={() => setProjectModalOpen(true)}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
+      <PageHeader/>
       <Main>
         <Router>
           <Routes>
             <Route
               path={"/projects"}
               element={
-                <ProjectListScreen projectButton={
-                  <ButtonNoPadding
-                    type="link"
-                    onClick={() => setProjectModalOpen(true)}
-                  >
-                    创建项目
-                  </ButtonNoPadding>
-                }/>
+                <ProjectListScreen/>
               }
             ></Route>
             <Route
@@ -55,22 +39,19 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal/>
     </Container>
   );
 };
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <Row gap={true}>
         <div onClick={resetRoute} style={{ cursor: "pointer" }}>
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
         </div>
-        <ProjectPopover {...props}/>
+        <ProjectPopover/>
         <span>用户</span>
       </Row>
       <HeaderRight>
@@ -87,7 +68,7 @@ const User = () => {
       overlay={
         <Menu>
           <Menu.Item key={"logout"}>
-            <Button type="link" onClick={logout}>
+            <Button type="link" onClick={() => logout}>
               登出
             </Button>
           </Menu.Item>

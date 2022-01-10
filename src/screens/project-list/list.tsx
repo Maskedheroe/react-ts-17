@@ -8,6 +8,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useDispatch } from 'react-redux';
+import { projectListActions } from 'screens/project-list/project-list.slice';
 
 // TODO 把所有id都改成number类型
 export interface Project {
@@ -23,9 +25,8 @@ interface ListProps extends TableProps<Project> {
   users: User[];
   list: Project[];
   refresh?: () => void;
-  projectButton: JSX.Element
 }
-export const List = ({ users, list, projectButton, ...props }: ListProps) => {
+export const List = ({ users, list, ...props }: ListProps) => {
   const { mutate } = useEditProject();
   const dataList = list.map((value, index) => {
     return {
@@ -41,6 +42,7 @@ export const List = ({ users, list, projectButton, ...props }: ListProps) => {
   const pinProject = (id: number) => (pin: boolean) => {
     return mutate({ id, pin }).then(props.refresh);
   };
+  const dispatch = useDispatch()
   return (
     <Table
       pagination={false}
@@ -97,9 +99,7 @@ export const List = ({ users, list, projectButton, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      {
-                        projectButton
-                      }
+                      <ButtonNoPadding type='link' onClick={() => dispatch(projectListActions.openProjectModal)}>编辑 </ButtonNoPadding>
                     </Menu.Item>
                   </Menu>
                 }

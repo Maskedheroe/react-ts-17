@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { Spin, Typography, Button } from "antd";
-import { DevTools } from 'jira-dev-tool';
 
 export const FullPageLoading = () => (
   <FullPage>
@@ -11,7 +10,6 @@ export const FullPageLoading = () => (
 
 export const FullPageError = ({ error }: { error: Error | null }) => (
   <FullPage>
-    <DevTools />
     <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
   </FullPage>
 );

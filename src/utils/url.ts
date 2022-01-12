@@ -6,11 +6,11 @@ import { cleanObject } from './index';
  * 返回页面url中，指定键的参数值
  */
 
-export const useQueryQueryParam = <K extends string>(keys: K[]) => {
+export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParam] = useSearchParams();
   return [
     useMemo(
-      () =>
+      () => 
         keys.reduce((prev, key) => {
           return { ...prev, [key]: searchParams.get(key) || "" };
           // 注意[key]的这个语法细节：它代表的是变量作为变量名，而不是像直接写key时候的，key就成了变量名

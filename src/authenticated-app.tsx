@@ -14,36 +14,15 @@ import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/ProjectPopover";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  // const [projectModalOpen, setProjectModalOpen] = useState(false);
   // 这个函数里所有使用到的组件都只是申明，因为我们在申明一个组件 export const component = () => {}
   return (
     <Container>
-      <PageHeader
-        projectButton={
-          <ButtonNoPadding
-            type="link"
-            onClick={() => setProjectModalOpen(true)}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
-      <Main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen projectButton={
-                  <ButtonNoPadding
-                    type="link"
-                    onClick={() => setProjectModalOpen(true)}
-                  >
-                    创建项目
-                  </ButtonNoPadding>
-                }/>
-              }
-            ></Route>
+            <Route path={"/projects"} element={<ProjectListScreen />}></Route>
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -53,24 +32,24 @@ export const AuthenticatedApp = () => {
               element={<Navigate to="/projects"></Navigate>}
             ></Route>
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+        </Main>
+        <ProjectModal
+        // projectModalOpen={projectModalOpen}
+        // onClose={() => setProjectModalOpen(false)}
+        />
+      </Router>
     </Container>
   );
 };
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <Row gap={true}>
         <div onClick={resetRoute} style={{ cursor: "pointer" }}>
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
         </div>
-        <ProjectPopover {...props}/>
+        <ProjectPopover />
         <span>用户</span>
       </Row>
       <HeaderRight>

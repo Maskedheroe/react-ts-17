@@ -6,11 +6,12 @@ import styled from "@emotion/styled";
 import { useProjects } from "../../utils/project";
 import { useUsers } from "../../utils/user";
 import { Button, Typography } from "antd";
-import { useQueryQueryParam } from "utils/url";
-import { useProjectsSearchParams } from "./util";
+import { useUrlQueryParam } from "utils/url";
+import { useProjectModal, useProjectsSearchParams } from "./util";
 import { Row } from "components/lib";
+import { ButtonNoPadding } from '../../components/lib';
 
-export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
   // 基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象(非响应式的对象)，绝不可以放到依赖里
   const [keys, setKeys] = useState<("name" | "personId")[]>([
     "name",
@@ -25,11 +26,12 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   } = useProjects(useDebounce(param, 200));
   // useEffect的大坑！！！！！
   const { data: users } = useUsers();
+  const { open } = useProjectModal()
   return (
     <Container>
       <Row between={true} style={{ justifyContent: "space-between" }}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding onClick={open} type='link'>创建项目</ButtonNoPadding>
       </Row>
       <SearchPanel
         param={param}
@@ -45,7 +47,6 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
         dataSource={list || []}
         loading={isLoading}
         refresh={retry}
-        projectButton={props.projectButton}
       ></List>
     </Container>
   );

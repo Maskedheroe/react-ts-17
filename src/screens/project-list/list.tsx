@@ -23,9 +23,8 @@ interface ListProps extends TableProps<Project> {
   users: User[];
   list: Project[];
   refresh?: () => void;
-  projectButton: JSX.Element
 }
-export const List = ({ users, list, projectButton, ...props }: ListProps) => {
+export const List = ({ users, list, ...props }: ListProps) => {
   const { mutate } = useEditProject();
   const dataList = list.map((value, index) => {
     return {
@@ -97,9 +96,6 @@ export const List = ({ users, list, projectButton, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      {
-                        projectButton
-                      }
                     </Menu.Item>
                   </Menu>
                 }

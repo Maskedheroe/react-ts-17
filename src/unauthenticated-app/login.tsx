@@ -3,12 +3,10 @@ import { useAuth } from "../context/auth-context";
 import { Form, Input, Button } from "antd";
 import { LongButton } from "unauthenticated-app";
 import { useAsync } from '../utils/use-async';
-import { useDispatch } from 'react-redux';
 
 export const Login = ({ onError }: { onError: (error: Error) => void }) => {
   const { login, user, register } = useAuth();
   const { run, isLoading } = useAsync(undefined, { throwOnError: true })
-  const dispatch = useDispatch()
 
   const handleSubmit = async (value: {
     username: string;

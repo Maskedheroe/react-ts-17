@@ -43,7 +43,7 @@ export const Register = ({ onError }: { onError: (error: Error) => void }) => {
         name={"cpassword"}
         rules={[{ required: true, message: "请确认密码 " }]}
       >
-        <Input type="password" id={"password"} placeholder={"确认密码"} />
+        <Input type="password" id={"confirmPassword"} placeholder={"确认密码"} />
       </Form.Item>
       <Form.Item>
         <LongButton loading={isLoading} type={"primary"} htmlType={"submit"}>
